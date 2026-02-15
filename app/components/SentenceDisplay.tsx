@@ -29,14 +29,14 @@ export default function SentenceDisplay({
         return (
           <div key={i} className="flex flex-col items-center">
             <span
-              className={`text-xs font-medium text-pink-500 h-5 ${
+              className={`text-xl font-medium text-pink-500 h-6 ${
                 showPinyin ? "opacity-100" : "opacity-0"
               }`}
             >
               {isChinese ? charPinyin : "\u00A0"}
             </span>
             <span
-              className={`text-3xl font-bold ${
+              className={`text-5xl font-bold ${
                 difficulty === "junior" && showHintIndex === i
                   ? "text-pink-500"
                   : "text-indigo-900"
