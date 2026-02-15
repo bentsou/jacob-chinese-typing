@@ -139,6 +139,8 @@ export default function TypingGame({ sentences }: TypingGameProps) {
           sentence={currentSentence}
           difficulty={difficulty}
           showHintIndex={showHintIndex}
+          userInput={userInput}
+          submitted={score !== null}
         />
       </div>
 

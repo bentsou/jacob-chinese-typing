@@ -3,18 +3,40 @@
 import { pinyin } from "pinyin-pro";
 import type { Difficulty } from "./DifficultySelector";
 
+const PUNCTUATION_RE = /[，。、；：「」『』（）！？…—\s,.;:!?'"()\-\[\]{}]/;
+
 interface SentenceDisplayProps {
   sentence: string;
   difficulty: Difficulty;
   showHintIndex: number | null;
+  userInput?: string;
+  submitted?: boolean;
 }
 
 export default function SentenceDisplay({
   sentence,
   difficulty,
   showHintIndex,
+  userInput,
+  submitted,
 }: SentenceDisplayProps) {
   const chars = sentence.split("");
+
+  // Build a map from each non-punctuation sentence char index to whether it matches input
+  const mismatchSet = new Set<number>();
+  if (submitted && userInput !== undefined) {
+    // Strip punctuation from input
+    const strippedInput = userInput.replace(new RegExp(PUNCTUATION_RE.source, "g"), "");
+    let inputIdx = 0;
+    for (let i = 0; i < chars.length; i++) {
+      if (!PUNCTUATION_RE.test(chars[i])) {
+        if (inputIdx >= strippedInput.length || chars[i] !== strippedInput[inputIdx]) {
+          mismatchSet.add(i);
+        }
+        inputIdx++;
+      }
+    }
+  }
 
   return (
     <div className="flex flex-wrap justify-center gap-x-1 gap-y-3">
@@ -37,9 +59,11 @@ export default function SentenceDisplay({
             </span>
             <span
               className={`text-5xl font-bold ${
-                difficulty === "junior" && showHintIndex === i
-                  ? "text-pink-500"
-                  : "text-indigo-900"
+                mismatchSet.has(i)
+                  ? "text-red-500 bg-red-100 rounded"
+                  : difficulty === "junior" && showHintIndex === i
+                    ? "text-pink-500"
+                    : "text-indigo-900"
               }`}
             >
               {char}
