@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "中文打字練習",
-  description: "練習打中文字的好幫手",
+  title: "Learning Fun",
+  description: "Practice Chinese typing and math",
 };
 
 export default function RootLayout({
